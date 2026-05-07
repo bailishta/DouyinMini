@@ -1,12 +1,20 @@
 package com.douyinmini.config
 
 import android.view.View
+import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 
 object WebViewConfig {
 
     fun configure(webView: WebView) {
+        WebView.setWebContentsDebuggingEnabled(true)
+
+        CookieManager.getInstance().apply {
+            setAcceptCookie(true)
+            setAcceptThirdPartyCookies(webView, true)
+        }
+
         webView.apply {
             setLayerType(View.LAYER_TYPE_HARDWARE, null)
             overScrollMode = WebView.OVER_SCROLL_NEVER
@@ -22,7 +30,7 @@ object WebViewConfig {
                 cacheMode = WebSettings.LOAD_DEFAULT
                 allowFileAccess = false
                 allowContentAccess = false
-                setSupportMultipleWindows(true)
+                setSupportMultipleWindows(false)
                 userAgentString = buildUserAgent()
                 useWideViewPort = true
                 loadWithOverviewMode = true

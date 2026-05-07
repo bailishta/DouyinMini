@@ -28,6 +28,7 @@ class FullscreenVideoLayout @JvmOverloads constructor(
         callback = cb
 
         val container = findViewById<FrameLayout>(R.id.video_container)
+        (view.parent as? android.view.ViewGroup)?.removeView(view)
         container.addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         container.visibility = View.VISIBLE
 
@@ -38,7 +39,11 @@ class FullscreenVideoLayout @JvmOverloads constructor(
 
     fun hideFullscreen() {
         val container = findViewById<FrameLayout>(R.id.video_container)
-        customView?.let { container.removeView(it) }
+        customView?.let {
+            try {
+                container.removeView(it)
+            } catch (_: Exception) {}
+        }
         customView = null
         callback?.onCustomViewHidden()
         callback = null
